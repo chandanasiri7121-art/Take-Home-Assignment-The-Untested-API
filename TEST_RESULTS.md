@@ -3,9 +3,10 @@
 ## Test Suite
 
 - Test suites: 2
-- Tests: 64
-- Passing: 64
-- Failing: 0
+- Test cases executed: 64
+- Standard passing tests: 60
+- Known-defect tests: 4
+- Known-defect tests are marked with Jest `test.failing()`
 - Test framework: Jest
 - API testing: Supertest
 
@@ -18,6 +19,11 @@
 
 ## Notes
 
-The test suite covers the task service functions, API routes, edge cases, bug reproduction cases, and the `PATCH /tasks/:id/assign` feature.
+The test suite covers the task service functions, API routes, edge cases,
+bug reproduction cases, and the `PATCH /tasks/:id/assign` feature.
 
-Known defects identified during testing are documented in `BUG_REPORT.md`.
+Four tests intentionally reproduce known defects documented in
+`BUG_REPORT.md` and are marked with Jest `test.failing()`.
+
+The pagination defect was fixed; the partial status matching and
+unrestricted update-field defects remain documented known issues.

@@ -21,3 +21,25 @@
 - **Actual behavior**: The `PUT /tasks/:id` route blindly merges the request body into the task object. A malicious payload can overwrite `id`, `createdAt`, or `completedAt`.
 - **How tests discovered it**: A test sent a PUT request with `{"id": "hacked-id"}` and verified that the task could no longer be found by its original ID.
 - **Proposed fix**: Explicitly whitelist the fields that can be updated in `taskService.update()` (e.g., allow only `title`, `description`, `status`, `priority`, and `dueDate`).
+
+## Feature: PATCH /tasks/:id/assign
+
+### Design decisions
+
+- `assignee` must be provided as a string.
+- Empty and whitespace-only values are rejected with `400 Bad Request`.
+- Surrounding whitespace is trimmed before storing the assignee.
+- A nonexistent task returns `404 Not Found`.
+- Reassignment is allowed: assigning a new user replaces the previous assignee.
+- The endpoint returns the complete updated task with `200 OK`.
+
+### Tests
+
+The integration tests cover:
+- successful assignment
+- nonexistent task
+- missing assignee
+- non-string assignee
+- empty string
+- whitespace-only string
+- reassignment
